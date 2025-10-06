@@ -1,0 +1,17 @@
+node_modules/
+manifest.json
+node_modules
+.env
+
+
+
+distbuild
+.DS_Store   
+.vscode
+.idea
+*.log
+*.env
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+/build
