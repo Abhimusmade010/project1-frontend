@@ -35,7 +35,7 @@ const ComplaintForm = () => {
 
     try {
       // add below the url in fetch
-      const response = await fetch('/user/submit', {
+      const response = await fetch('/user/submit', {   // here is the fetech for backend connnection  submit the complaint 
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
