@@ -7,7 +7,8 @@ const ComplaintForm = () => {
     emailAddress: '',
     department: '',
     roomNumber: '',
-    natureOfComplaint: ''
+    natureOfComplaint: '',
+    dsrNo: ''
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
@@ -44,7 +45,8 @@ const ComplaintForm = () => {
           emailId: formData.emailAddress,
           department: formData.department,
           roomNo: formData.roomNumber,
-          natureOfComplaint: formData.natureOfComplaint
+          natureOfComplaint: formData.natureOfComplaint,
+          dsrNo: formData.dsrNo
         }),
       });
       
@@ -58,7 +60,8 @@ const ComplaintForm = () => {
           emailAddress: '',
           department: '',
           roomNumber: '',
-          natureOfComplaint: ''
+          natureOfComplaint: '',
+          dsrNo: ''
         });
         setTimeout(() => {
           navigate('/');
@@ -139,6 +142,28 @@ const ComplaintForm = () => {
               required
             />
           </div>
+
+          <div className="form-group">
+            <label className="form-label">
+              DSR number <span className="required">*</span>
+            </label>
+            <input
+              type="text"
+              name="dsrNo"
+              value={formData.dsrNo}
+              onChange={handleChange}
+              className="form-input"
+              placeholder="Enter DSR Number (e.g.,102)"
+              required
+            />
+          </div>
+
+
+
+
+
+
+
 
           <div className="form-group">
             <label className="form-label">

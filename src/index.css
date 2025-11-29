@@ -31,3 +31,20 @@ code {
   color: #721c24;
   border: 1px solid #f5c6cb;
 }
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: auto;
+}
+.navbar {
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
+  padding: 1rem 1.5rem;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  box-sizing: border-box;
+}

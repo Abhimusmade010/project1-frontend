@@ -11,7 +11,7 @@ const Header = () => {
               {/* <i></i> */}
             </div>
             <div className="logo-text">
-              <h1>PICT Maintenance</h1>
+              <h1>PICT Hardware Maintenance</h1>
               <p>Pune Institute of Computer Technology</p>
             </div>
           </div>
