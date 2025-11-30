@@ -9,7 +9,7 @@ const HomePage = () => {
   return (
     <div>
       {/* Hero Section */}
-      <section className="hero">
+      {/* <section className="hero">
         <div className="container">
           <h1>PICT Hardware Complaint & Maintenance Management System</h1>
           <p>An official platform for logging and monitoring hardware issues across the campus.</p>
@@ -18,7 +18,37 @@ const HomePage = () => {
             <i className="fas fa-arrow-right"></i>
           </Link>
         </div>
-      </section>
+      </section> */}
+
+        <div className="hero">
+          <div className="hero-inner">
+            <h1>
+              PICT Hardware Complaint System <br />
+              {/* Maintenance Management System */}
+            </h1>
+            
+            <p>
+              An official platform for logging and monitoring hardware issues across the campus.
+            </p>
+
+            <Link to="/submit-complaint" className="cta-button">
+              Register Complaint →
+            </Link>
+          </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
       {/* Contact Section */}
       <section className="contact" id="contact">

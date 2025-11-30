@@ -10,11 +10,7 @@ const ComplaintForm = () => {
     department: '',
     roomNumber: '',
     natureOfComplaint: '',
-<<<<<<< HEAD
-    dsrNo: ''
-=======
     dsrNo: ''     // ✅ Added DSR number
->>>>>>> abhishek
   });
 
   const [loading, setLoading] = useState(false);
@@ -55,21 +51,6 @@ const ComplaintForm = () => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -94,6 +75,7 @@ const ComplaintForm = () => {
       }
 
     }
+
   };
 
   const handleSubmit = async (e) => {
@@ -122,11 +104,7 @@ const ComplaintForm = () => {
           department: formData.department,
           roomNo: formData.roomNumber,
           natureOfComplaint: formData.natureOfComplaint,
-<<<<<<< HEAD
-          dsrNo: formData.dsrNo
-=======
           dsrNo: formData.dsrNo    // ✅ Send to backend
->>>>>>> abhishek
         }),
       });
 
@@ -231,45 +209,21 @@ const ComplaintForm = () => {
 
           {/* DSR NUMBER */}
           <div className="form-group">
-<<<<<<< HEAD
-            <label className="form-label">
-              DSR number <span className="required">*</span>
-            </label>
-=======
             <label className="form-label">DSR Number *</label>
->>>>>>> abhishek
             <input
-              type="text"
+              type="number"
               name="dsrNo"
               value={formData.dsrNo}
               onChange={handleChange}
               className="form-input"
-<<<<<<< HEAD
-              placeholder="Enter DSR Number (e.g.,102)"
-=======
               placeholder="Enter DSR Number (e.g., 102)"
->>>>>>> abhishek
               required
             />
           </div>
 
-<<<<<<< HEAD
-
-
-
-
-
-
-
-          <div className="form-group">
-            <label className="form-label">
-              Nature of Complaint <span className="required">*</span>
-            </label>
-=======
           {/* COMPLAINT */}
           <div className="form-group">
             <label className="form-label">Nature of Complaint *</label>
->>>>>>> abhishek
             <textarea
               name="natureOfComplaint"
               value={formData.natureOfComplaint}
