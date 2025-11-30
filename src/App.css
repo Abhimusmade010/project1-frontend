@@ -329,6 +329,7 @@ body {
     gap: 20px;
   }
 }
+<<<<<<< HEAD
 /* @media (max-width: 768px) {
   h1 {
     font-size: 1.8rem;
@@ -464,4 +465,12 @@ html, body {
     font-size: 1.8rem;
     line-height: 2.2rem;
   }
+=======
+
+
+.error-text {
+  color: #e63946;
+  font-size: 14px;
+  margin-top: 5px;
+>>>>>>> abhishek
 }
