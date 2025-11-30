@@ -330,3 +330,10 @@ body {
     gap: 20px;
   }
 }
+
+
+.error-text {
+  color: #e63946;
+  font-size: 14px;
+  margin-top: 5px;
+}
