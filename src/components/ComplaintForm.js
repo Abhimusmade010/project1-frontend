@@ -10,8 +10,13 @@ const ComplaintForm = () => {
     department: '',
     roomNumber: '',
     natureOfComplaint: '',
-    dsrNo: ''     // ✅ Added DSR number
+    dsrNo: '' ,    // ✅ Added DSR number
+    image:null
   });
+
+  const [previewImage, setPreviewImage] = useState(null);
+  const [imageError, setImageError] = useState("");
+
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
@@ -51,6 +56,38 @@ const ComplaintForm = () => {
 
 
 
+//image handleer
+//   const handleImageUpload = (e) => {
+//   const file = e.target.files[0];
+//   if (!file) return;
+
+//   // Validate file size (1MB = 1,024,000 bytes)
+//   if (file.size > 1024 * 1024) {
+//     setImageError("Image size must be less than 1MB.");
+//     setPreviewImage(null);
+//     setFormData({ ...formData, image: null });
+//     return;
+//   }
+
+//   setImageError("");
+
+//   // Show preview
+//   // const imageUrl = URL.createObjectURL(file);
+//   // setPreviewImage(imageUrl);
+
+//   // Save file to formData
+//   setFormData({ ...formData, image: file });
+// };
+
+// const removeImage = () => {
+//   setPreviewImage(null);
+//   setFormData({ ...formData, image: null });
+// };
+
+
+
+
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -78,71 +115,200 @@ const ComplaintForm = () => {
 
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setMessage({ type: '', text: '' });
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
 
-    // FULL FORM validation
-    const result = formSchema.safeParse(formData);
-
-    if (!result.success) {
-      setMessage({
-        type: "error",
-        text: result.error.errors[0].message
-      });
-      setLoading(false);
+    // Validate file size (1MB)
+    if (file.size > 1024 * 1024) {
+      setImageError("Image size must be less than 1MB.");
+      setPreviewImage(null);
+      setFormData({ ...formData, image: null });
       return;
     }
 
-    try {
-      const response = await fetch('/user/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          emailId: formData.emailAddress,
-          department: formData.department,
-          roomNo: formData.roomNumber,
-          natureOfComplaint: formData.natureOfComplaint,
-          dsrNo: formData.dsrNo    // ✅ Send to backend
-        }),
-      });
+    setImageError("");
 
-      const data = await response.json();
+    // Preview
+    const url = URL.createObjectURL(file);
+    setPreviewImage(url);
 
-      if (data.success) {
-        setMessage({
-          type: 'success',
-          text: `Complaint submitted successfully! Your complaint ID is: ${data.data.complaintId}`
-        });
-
-        // RESET form
-        setFormData({
-          emailAddress: '',
-          department: '',
-          roomNumber: '',
-          natureOfComplaint: '',
-          dsrNo: ''
-        });
-
-        setTimeout(() => navigate('/'), 3000);
-
-      } else {
-        setMessage({
-          type: 'error',
-          text: data.errors || 'Failed to submit complaint. Please try again.'
-        });
-      }
-
-    } catch (error) {
-      setMessage({
-        type: 'error',
-        text: 'Network error. Please check your connection and try again.'
-      });
-    }
-
-    setLoading(false);
+    // Save file
+    setFormData({ ...formData, image: file });
   };
+
+  const removeImage = () => {
+    setPreviewImage(null);
+    setFormData({ ...formData, image: null });
+  };
+
+
+
+  const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setMessage({ type: '', text: '' });
+
+        // FULL FORM validation (Zod)
+        const result = formSchema.safeParse(formData);
+
+        if (!result.success) {
+          setMessage({
+            type: "error",
+            text: result.error.errors[0].message
+          });
+          setLoading(false);
+          return;
+        }
+
+        try {
+          const body = new FormData();
+
+          // Append text inputs
+          body.append('emailId', formData.emailAddress);
+          body.append('department', formData.department);
+          body.append('roomNo', formData.roomNumber);
+          body.append('natureOfComplaint', formData.natureOfComplaint);
+          body.append('dsrNo', formData.dsrNo);
+
+          // Append image file
+          if (formData.image) {
+            body.append('image', formData.image);
+          }
+
+          const response = await fetch('/user/submit', {
+            method: 'POST',
+            body: body,          // ❗ MUST USE multipart/form-data
+            // ❗ DO NOT SET HEADERS → Browser will set boundary
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            setMessage({
+              type: 'success',
+              text: `Complaint submitted successfully! Your complaint ID is: ${data.data.complaintId}`
+            });
+
+            // RESET form
+            setFormData({
+              emailAddress: '',
+              department: '',
+              roomNumber: '',
+              natureOfComplaint: '',
+              dsrNo: '',
+              image: null   // reset image also
+            });
+            setPreviewImage(null);
+
+            setTimeout(() => navigate('/'), 3000);
+
+          } else {
+            setMessage({
+              type: 'error',
+              text: data.errors || 'Failed to submit complaint. Please try again.'
+            });
+          }
+
+        } catch (error) {
+          console.error(error);
+          setMessage({
+            type: 'error',
+            text: 'Network error. Please check your connection and try again.'
+          });
+        }
+
+        setLoading(false);
+  };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+  //   setMessage({ type: '', text: '' });
+
+  //   // FULL FORM validation
+  //   const result = formSchema.safeParse(formData);
+
+  //   if (!result.success) {
+  //     setMessage({
+  //       type: "error",
+  //       text: result.error.errors[0].message
+  //     });
+  //     setLoading(false);
+  //     return;
+  //   }
+
+  //   try {
+  //     const response = await fetch('/user/submit', {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({
+  //         emailId: formData.emailAddress,
+  //         department: formData.department,
+  //         roomNo: formData.roomNumber,
+  //         natureOfComplaint: formData.natureOfComplaint,
+  //         dsrNo: formData.dsrNo    // ✅ Send to backend
+  //       }),
+  //     });
+
+  //     const data = await response.json();
+
+  //     if (data.success) {
+  //       setMessage({
+  //         type: 'success',
+  //         text: `Complaint submitted successfully! Your complaint ID is: ${data.data.complaintId}`
+  //       });
+
+  //       // RESET form
+  //       setFormData({
+  //         emailAddress: '',
+  //         department: '',
+  //         roomNumber: '',
+  //         natureOfComplaint: '',
+  //         dsrNo: ''
+  //       });
+
+  //       setTimeout(() => navigate('/'), 3000);
+
+  //     } else {
+  //       setMessage({
+  //         type: 'error',
+  //         text: data.errors || 'Failed to submit complaint. Please try again.'
+  //       });
+  //     }
+
+  //   } catch (error) {
+  //     setMessage({
+  //       type: 'error',
+  //       text: 'Network error. Please check your connection and try again.'
+  //     });
+  //   }
+
+  //   setLoading(false);
+  // };
+
+
+
+
+
+
 
   return (
     <div className="container">
@@ -233,6 +399,57 @@ const ComplaintForm = () => {
               required
             />
           </div>
+
+
+            {/* IMAGE UPLOAD */}
+            {/* IMAGE UPLOAD */}
+            <div className="form-group">
+              <label className="form-label">
+                Upload Image (Max 1MB) *
+              </label>
+
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                className="form-input"
+              />
+
+              {/* Size error or validation errors */}
+              {imageError && (
+                <p className="error-text">{imageError}</p>
+              )}
+
+              {/* Preview + Remove Button */}
+              {previewImage && (
+                <div className="image-preview-container">
+                  <img
+                    src={previewImage}
+                    alt="Preview"
+                    className="image-preview"
+                  />
+
+                  <button
+                    type="button"
+                    className="remove-image-button"
+                    onClick={removeImage}
+                  >
+                    Remove Image
+                  </button>
+                </div>
+              )}
+            </div>
+
+
+
+        
+
+
+
+
+
+
+
 
           <button type="submit" className="submit-button" disabled={loading}>
             {loading ? 'Submitting...' : 'Submit Complaint'}
