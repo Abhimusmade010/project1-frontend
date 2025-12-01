@@ -13,7 +13,7 @@ function AppContent() {
 
   return (
     <div className="App">
-      {!isDashboard && <Header />}
+      {/* {<Header />} */}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/submit-complaint" element={<ComplaintForm />} />

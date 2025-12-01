@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
+import Header from './Header';
+
 const ComplaintForm = () => {
   const navigate = useNavigate();
 
@@ -181,7 +183,7 @@ const ComplaintForm = () => {
             body: body,          // ❗ MUST USE multipart/form-data
             // ❗ DO NOT SET HEADERS → Browser will set boundary
           });
-
+          
           const data = await response.json();
 
           if (data.success) {
@@ -312,6 +314,8 @@ const ComplaintForm = () => {
 
   return (
     <div className="container">
+      <Header isAdmin={false}/>
+
       <div className="form-container">
         <h1 className="form-title">Submit Hardware Complaint</h1>
 

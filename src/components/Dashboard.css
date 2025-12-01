@@ -65,12 +65,12 @@
 /* Filters Section */
 .filters-section {
   background: white;
-  padding: 25px;
+  padding: 12px 16px ;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   margin-bottom: 30px;
   display: flex;
-  gap: 30px;
+  gap: 40px;
   align-items: center;
   flex-wrap: wrap;
 }
@@ -381,19 +381,91 @@
   }
 }
 
+
+
+
+
+
+
+
+.dashboard-header {
+  display: flex;
+  justify-content: center;     /* center the title */
+  align-items: center;
+  position: relative;
+  padding: 10px 20px;
+}
+
+/* Center Title */
+.dashboard-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #007bff;
+  margin: 0;
+}
+
+/* Right Side Logout Button */
+.logout-btn {
+  position: absolute;
+  right: 20px;                 /* stick to right */
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+  transition: color 0.2s ease;
+}
+.logout-btn :hover{
+  color: #007bff;
+}
+
+/* Invisible placeholder to balance layout */
+.left-placeholder {
+  width: 120px;                /* same width as logout button approx */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .dashboard-container {
     padding: 10px;
   }
   
-  .dashboard-header {
-    padding: 20px;
-  }
+  /* .dashboard-header {
+    padding: 5px;
+  } */
   
-  .dashboard-header h1 {
-    font-size: 28px;
-  }
+  /* . h1 {
+    font-size: 25px;
+  } */
   
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -438,5 +510,58 @@
   .btn-cancel {
     padding: 6px 12px;
     font-size: 12px;
+  }
+}
+
+
+
+
+
+
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: #666;
+  font-weight: 500;
+  padding: 10px 15px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.nav-link:hover {
+  color: #007bff;
+  background: #f8f9fa;
+}
+
+.nav-link.logout-btn:hover {
+  color: #dc3545;
+  background: #f8d7da;
+}
+
+.nav-link i {
+  font-size: 16px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .nav-container {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .nav-actions {
+    gap: 15px;
+  }
+  
+  .nav-link {
+    padding: 8px 12px;
+    font-size: 13px;
   }
 }

@@ -2,7 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import pictLogo from "../assets/pict-logo.png"; // <-- add your logo file
 
-const Header = () => {
+// import { useNavigate } from 'react-router-dom';
+
+
+
+const Header = ({isAdmin,handleLogout}) => {
+
   return (
     <>
       {/* TOP BLUE STRIP — EXACT LIKE PICT WEBSITE */}
@@ -25,9 +30,30 @@ const Header = () => {
         <div className="container">
           <nav>
             <ul className="nav-links">
+
+
               <li><Link to="/">Home</Link></li>
-              <li><Link to="/#contact">Contact</Link></li>
-              <li><Link to="/admin-login">Admin Login</Link></li>
+
+                {/* {!isAdmin && (
+                  <li><Link to="/#contact">Contact</Link></li>
+                  
+                )}      */}
+              
+                {isAdmin && (
+                <li>
+                  <button onClick={handleLogout} className="logout-btn">
+                    <i className="fas fa-sign-out-alt"></i> Admin Logout
+                  </button>
+                </li>
+                )}
+ 
+                {!isAdmin && (
+                  <li><Link to="/admin-login">Admin Login</Link></li>
+                  
+                )}
+                  
+              
+              
 
               <li>
                 <a href="https://pict.edu" target="_blank" rel="noopener noreferrer">

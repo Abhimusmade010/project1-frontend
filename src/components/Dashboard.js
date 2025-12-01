@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import DashboardNav from './DashboardNav';
+// import DashboardNav from './DashboardNav';
 import DepartmentSummary from './DepartmentSummary';
 import './Dashboard.css';
+
+import Header from "../components/Header";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -25,7 +27,8 @@ const Dashboard = () => {
     'Information Technology',
     'Electronics & Communication',
     'Electronics and Computer',
-    'Artificial Intelligence and Data Science'
+    'Artificial Intelligence and Data Science',
+    'Basic Science and Engineering'
   ];
 
   const statuses = ['Pending', 'In-progress', 'Resolved'];
@@ -141,6 +144,30 @@ const Dashboard = () => {
     return deptMatch && statusMatch;
   });
 
+
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('/admin/logout', {
+        credentials: 'include'
+      });
+      
+      if (response.ok) {
+        navigate('/');
+      }
+    } catch (error) {
+      console.error('Logout error:', error);
+      navigate('/');
+    }
+  };
+
+
+
+
+
+
+
+
   const getStatusColor = (status) => {
     switch (status) {
       case 'Pending': return '#ffc107';
@@ -168,7 +195,8 @@ const Dashboard = () => {
 
      return (
      <div>
-       <DashboardNav />
+      <Header isAdmin={true} handleLogout={handleLogout} />
+       {/* <DashboardNav /> */}
        {notification.show && (
          <div className={`notification ${notification.type}`}>
            {notification.message}
@@ -180,11 +208,22 @@ const Dashboard = () => {
            </button>
          </div>
        )}
+       
        <div className="dashboard-container">
-        <div className="dashboard-header">
-          <h1>Complaints Dashboard</h1>
-          <p>Manage and track hardware complaints across all departments</p>
-        </div>
+        {/* <button onClick={handleLogout} className="nav-link logout-btn">
+            <i className="fas fa-sign-out-alt"></i>
+            Admin Logout
+          </button>
+          <h1>Complaints Dashboard</h1> */}
+
+          <div className="dashboard-header">
+            
+
+            <h1 className="dashboard-title">Complaints Dashboard</h1>
+          </div>
+
+
+        
 
         {/* Statistics Cards */}
         <div className="stats-grid">
@@ -206,18 +245,13 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Department Summary */}
-        {showDepartmentSummary && (
-          <DepartmentSummary 
-            complaints={complaints} 
-            onDepartmentClick={handleDepartmentClick}
-          />
-        )}
+        
 
         {/* Filters */}
         <div className="filters-section">
+
           <div className="filter-group">
-            <label>Department:</label>
+            {/* <label>Department:</label> */}
             <select 
               value={selectedDepartment} 
               onChange={(e) => setSelectedDepartment(e.target.value)}
@@ -228,8 +262,10 @@ const Dashboard = () => {
               ))}
             </select>
           </div>
+
+
           <div className="filter-group">
-            <label>Status:</label>
+            {/* <label>Status:</label> */}
             <select 
               value={selectedStatus} 
               onChange={(e) => setSelectedStatus(e.target.value)}
@@ -240,6 +276,7 @@ const Dashboard = () => {
               ))}
             </select>
           </div>
+
           <div className="filter-group">
             <button 
               onClick={() => setShowDepartmentSummary(!showDepartmentSummary)}
@@ -249,6 +286,23 @@ const Dashboard = () => {
             </button>
           </div>
         </div>
+
+
+        {/* Department Summary */}
+        {showDepartmentSummary && (
+          <DepartmentSummary 
+            complaints={complaints} 
+            onDepartmentClick={handleDepartmentClick}
+          />
+        )}
+
+
+
+
+
+
+
+
 
                  {/* Complaints Table */}
          <div className="complaints-table-container">
@@ -263,12 +317,12 @@ const Dashboard = () => {
             <table className="complaints-table">
               <thead>
                 <tr>
-                  <th>Complaint ID</th>
+                  <th>Complaint_ID</th>
                   <th>Nature of Complaint</th>
                   <th>Department</th>
                   <th>Room No</th>
                   <th>Email</th>
-                  <th>Received On</th>
+                  <th>Complaint Received Date</th>
                   <th>Status</th>
                   <th>Technician</th>
                   <th>Actions</th>
