@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
+import API_BASE_URL from '../config/api';
+
+
 
 import Header from './Header';
 
@@ -128,6 +131,10 @@ const ComplaintForm = () => {
       setFormData({ ...formData, image: null });
       return;
     }
+    if(!file.type.startsWith('image/')){
+      setImageError("Only image files are allowed!");
+      return;
+    }
 
     setImageError("");
 
@@ -178,7 +185,7 @@ const ComplaintForm = () => {
             body.append('image', formData.image);
           }
 
-          const response = await fetch('/user/submit', {
+          const response = await fetch(`${API_BASE_URL}/user/submit`, {
             method: 'POST',
             body: body,          // ❗ MUST USE multipart/form-data
             // ❗ DO NOT SET HEADERS → Browser will set boundary

@@ -7,9 +7,10 @@ import AdminLogin from './components/AdminLogin';
 import Dashboard from './components/Dashboard';
 import './App.css';
 
+
 function AppContent() {
   const location = useLocation();
-  const isDashboard = location.pathname === '/admin/dashboard';
+  // const isDashboard = location.pathname === '/admin/dashboard';
 
   return (
     <div className="App">

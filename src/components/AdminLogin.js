@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { Link } from "react-router-dom";
 import Header from './Header';
+import API_BASE_URL from '../config/api';
 
 
 const AdminLogin = () => {
@@ -26,7 +27,7 @@ const AdminLogin = () => {
       const formData = new FormData();
       formData.append('password', password);
 
-      const response = await fetch('/admin/login', {
+      const response = await fetch(`${API_BASE_URL}/admin/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',

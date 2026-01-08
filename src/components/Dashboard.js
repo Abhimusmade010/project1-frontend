@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import DepartmentSummary from './DepartmentSummary';
 import './Dashboard.css';
 import Header from "../components/Header";
+import API_BASE_URL from '../config/api';
 
 
 const Dashboard = () => {
@@ -39,7 +40,7 @@ const Dashboard = () => {
   const fetchComplaints = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/admin/api/complaints', {
+      const response = await fetch(`${API_BASE_URL}/admin/api/complaints`, {
         credentials: 'include'
       });
 
@@ -72,10 +73,9 @@ const Dashboard = () => {
     };
     setStats(stats);
   };
-
   const updateComplaintStatus = async (rowIndex, status, technician) => {
     try {
-      const response = await fetch('/admin/update-status', {
+      const response = await fetch(`${API_BASE_URL}/admin/update-status`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -147,7 +147,7 @@ const Dashboard = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch('/admin/logout', {
+      const response = await fetch(`${API_BASE_URL}/admin/logout`, {
         credentials: 'include'
       });
       
