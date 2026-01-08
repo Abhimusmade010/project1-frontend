@@ -13,19 +13,6 @@ body {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 .App {
   min-height: 100vh;
 }
@@ -76,21 +63,6 @@ body {
   font-size: 13px;
   margin-top: 5px;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -234,6 +206,8 @@ body {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
+
+
 .form-title {
   font-size: 32px;
   font-weight: 700;
@@ -241,6 +215,31 @@ body {
   margin-bottom: 10px;
   text-align: center;
 }
+
+.back-home-button {
+  display: block;
+  width: 100%;
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 12px 0;
+  background: #0d6efd;  /* same blue as login */
+  color: white !important;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.back-home-button:hover {
+  background: #0056b3;
+}
+
+
+
 
 .form-subtitle {
   font-size: 16px;
@@ -310,79 +309,7 @@ body {
   background: #0056b3;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .header-content {
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  .nav-links {
-    gap: 20px;
-  }
-  
-  .hero h1 {
-    font-size: 36px;
-  }
-  
-  .hero p {
-    font-size: 18px;
-  }
-  
-  .form-container {
-    margin: 20px;
-    padding: 30px;
-  }
-  
-  .contact-info {
-    grid-template-columns: 1fr;
-    max-width: 100%;
-    gap: 20px;
-  }
-}
 
-.hero {
-  text-align: center;
-  padding: 60px 20px;
-}
-
-.hero h1 {
-  font-size: 3rem;
-  font-weight: 700;
-}
-
-.hero p {
-  font-size: 1.2rem;
-  margin-top: 10px;
-  color: #555;
-}
-
-.hero button {
-  margin-top: 30px;
-  padding: 12px 30px;
-  font-size: 1.2rem;
-  background: #0d6efd;
-  color: white;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-}
-
-@media (max-width: 768px) {
-  .hero h1 {
-    font-size: 1.8rem;
-  }
-
-  .hero p {
-    font-size: 1rem;
-    padding: 0 1rem;
-  }
-
-  .hero button {
-    width: 100%;
-    font-size: 1rem;
-  }
-}
 
 
 /* ---------- NAVIGATION BAR BELOW TITLE ---------- */
@@ -436,7 +363,7 @@ body {
 
 
 
-.hero {
+/* .hero {
   max-width: 900px;
   margin: auto;
   padding: 2rem 1rem;
@@ -452,7 +379,7 @@ body {
     font-size: 1.8rem;
     line-height: 2.2rem;
   }
-}
+} */
 
 
 
@@ -606,4 +533,31 @@ body {
 
 .remove-image-button:hover {
   background-color: #c9302c;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.toggle-eye {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+  /* user-select: none; */
 }

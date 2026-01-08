@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import DashboardNav from './DashboardNav';
 import DepartmentSummary from './DepartmentSummary';
 import './Dashboard.css';
-
 import Header from "../components/Header";
+
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -162,12 +161,6 @@ const Dashboard = () => {
   };
 
 
-
-
-
-
-
-
   const getStatusColor = (status) => {
     switch (status) {
       case 'Pending': return '#ffc107';
@@ -217,8 +210,6 @@ const Dashboard = () => {
           <h1>Complaints Dashboard</h1> */}
 
           <div className="dashboard-header">
-            
-
             <h1 className="dashboard-title">Complaints Dashboard</h1>
           </div>
 
@@ -296,14 +287,6 @@ const Dashboard = () => {
           />
         )}
 
-
-
-
-
-
-
-
-
                  {/* Complaints Table */}
          <div className="complaints-table-container">
            <div className="table-header">
@@ -326,6 +309,7 @@ const Dashboard = () => {
                   <th>Status</th>
                   <th>Technician</th>
                   <th>Actions</th>
+                  <th>Images</th>
                 </tr>
               </thead>
               <tbody>
@@ -346,11 +330,20 @@ const Dashboard = () => {
   );
 };
 
+
+
 const ComplaintRow = ({ complaint, onUpdateStatus, getStatusColor }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [status, setStatus] = useState(complaint.status);
   const [technician, setTechnician] = useState(complaint.technician || '');
   const [isUpdating, setIsUpdating] = useState(false);
+
+  const [selectedImage, setSelectedImage] = useState(null);
+
+    
+
+
+
 
   const handleUpdate = async () => {
     setIsUpdating(true);
@@ -376,6 +369,10 @@ const ComplaintRow = ({ complaint, onUpdateStatus, getStatusColor }) => {
       <td>{complaint.roomNo}</td>
       <td>{complaint.emailId}</td>
       <td>{complaint.receivedOn}</td>
+      
+
+
+
       <td>
         {isEditing ? (
           <select 
@@ -396,6 +393,7 @@ const ComplaintRow = ({ complaint, onUpdateStatus, getStatusColor }) => {
           </span>
         )}
       </td>
+
       <td>
         {isEditing ? (
           <input
@@ -409,6 +407,7 @@ const ComplaintRow = ({ complaint, onUpdateStatus, getStatusColor }) => {
           <span>{complaint.technician || '-'}</span>
         )}
       </td>
+
       <td>
         {isEditing ? (
           <div className="action-buttons">
@@ -425,7 +424,37 @@ const ComplaintRow = ({ complaint, onUpdateStatus, getStatusColor }) => {
            </button>
          )}
       </td>
+
+      <td>
+        {complaint.imageUrl && complaint.imageUrl.trim() !== "" ? (
+          <button 
+            className="view-image-button"
+            onClick={() => setSelectedImage(complaint.imageUrl)}
+          >
+            View Image
+          </button>
+        ) : (
+          "-"
+        )}
+      </td>
+
+
+
+      {selectedImage && (
+      <div className="image-modal-overlay" onClick={() => setSelectedImage(null)}>
+        <div className="image-modal-content" onClick={(e) => e.stopPropagation()}>
+          <img src={selectedImage} alt="Complaint" />
+          <button className="close-modal" onClick={() => setSelectedImage(null)}>Close</button>
+        </div>
+      </div>
+    )}
+
+
+
     </tr>
+
+    
+    
   );
 };
 

@@ -1,11 +1,21 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { Link } from "react-router-dom";
+import Header from './Header';
+
+
 const AdminLogin = () => {
   const navigate = useNavigate();
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
+
+  const [showPassword, setShowPassword] = useState(false);
+
+
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -55,7 +65,9 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="container">
+    
+    <div className>
+      {/* <Header /> */}
       <div className="form-container">
         <h1 className="form-title">Admin Login</h1>
         <p className="form-subtitle">Enter your admin credentials to access the dashboard</p>
@@ -67,7 +79,7 @@ const AdminLogin = () => {
         )}
 
         <form onSubmit={handleSubmit}>
-          <div className="form-group">
+          {/* <div className="form-group">
             <label className="form-label">
               Admin Password <span className="required">*</span>
             </label>
@@ -79,13 +91,47 @@ const AdminLogin = () => {
               placeholder="Enter admin password"
               required
             />
+          </div> */}
+
+          <div className="form-group">
+            <label className="form-label">
+              Admin Password <span className="required">*</span>
+            </label>
+
+            <div className="password-wrapper">
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="form-input"
+                placeholder="Enter admin password"
+                required
+              />
+
+              <span 
+                className="toggle-eye"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? "🔒" : "🔓"}
+              </span>
+            </div>
           </div>
+
 
           <button type="submit" className="submit-button" disabled={loading}>
             {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
       </div>
+
+      <div>
+        <Link to="/" className="back-home-button">
+            Back to Home
+        </Link>
+
+        
+      </div>
+
     </div>
   );
 };

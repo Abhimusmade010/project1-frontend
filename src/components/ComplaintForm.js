@@ -313,7 +313,7 @@ const ComplaintForm = () => {
 
 
   return (
-    <div className="container">
+    <div className>
       <Header isAdmin={false}/>
 
       <div className="form-container">
