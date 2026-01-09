@@ -122,9 +122,16 @@ const ComplaintForm = () => {
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
-    if (!file) return;
+    // if (!file) return;
 
+    if (!file) {
+      setImageError("");
+      setPreviewImage(null);
+      setFormData({ ...formData, image: null });
+      return;
+    }
     // Validate file size (1MB)
+
     if (file.size > 1024 * 1024) {
       setImageError("Image size must be less than 1MB.");
       setPreviewImage(null);
