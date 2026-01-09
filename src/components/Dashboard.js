@@ -5,8 +5,9 @@ import './Dashboard.css';
 import Header from "../components/Header";
 import API_BASE_URL from '../config/api';
 
-
 const Dashboard = () => {
+  console.log("🔥 DASHBOARD FROM MAIN BRANCH 🔥");
+
   const navigate = useNavigate();
   const [complaints, setComplaints] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -14,14 +15,15 @@ const Dashboard = () => {
   const [selectedDepartment, setSelectedDepartment] = useState('all');
   const [selectedStatus, setSelectedStatus] = useState('all');
   const [showDepartmentSummary, setShowDepartmentSummary] = useState(true);
+  
   const [stats, setStats] = useState({
     total: 0,
     pending: 0,
     inProgress: 0,
     resolved: 0
   });
-  const [notification, setNotification] = useState({ show: false, message: '', type: 'success' });
 
+  const [notification, setNotification] = useState({ show: false, message: '', type: 'success' });
   const departments = [
     'Computer Engineering',
     'Information Technology',
@@ -32,19 +34,18 @@ const Dashboard = () => {
   ];
 
   const statuses = ['Pending', 'In-progress', 'Resolved'];
-
   useEffect(() => {
     fetchComplaints();
   }, []);
 
-  const fetchComplaints = async () => {
-    try {
+  const fetchComplaints = async () =>{
+    try{
       setLoading(true);
       const response = await fetch(`${API_BASE_URL}/admin/api/complaints`, {
         credentials: 'include'
       });
 
-      if (response.status === 401) {
+      if(response.status === 401) {
         navigate('/admin-login');
         return;
       }
@@ -148,17 +149,42 @@ const Dashboard = () => {
   const handleLogout = async () => {
     try {
       const response = await fetch(`${API_BASE_URL}/admin/logout`, {
+        method:"POST",
         credentials: 'include'
       });
-      
+      const data=await response.json();
       if (response.ok) {
+        alert(data.message);
         navigate('/');
+      }
+      else{
+        alert("Logout Failed!")
       }
     } catch (error) {
       console.error('Logout error:', error);
       navigate('/');
     }
   };
+  //   const handleLogout = async () => {
+  //   try {
+  //     const response = await fetch(`${API_BASE_URL}/admin/logout`, {
+  //       method: "POST",
+  //       credentials: "include"
+  //     });
+
+  //     const data = await response.json();
+
+  //     if (data.success) {
+  //       alert(data.message); // ✅ "Logout Successfully!"
+  //       navigate("/admin-login"); // or "/"
+  //     } else {
+  //       alert("Logout failed");
+  //     }
+  //   } catch (error) {
+  //     alert("Logout error");
+  //   }
+  // };
+
 
 
   const getStatusColor = (status) => {
@@ -188,7 +214,7 @@ const Dashboard = () => {
 
      return (
      <div>
-      <Header isAdmin={true} handleLogout={handleLogout} />
+      <Header isAdmin={true} AdminLogout={true} handleLogout={handleLogout} />
        {/* <DashboardNav /> */}
        {notification.show && (
          <div className={`notification ${notification.type}`}>
@@ -212,10 +238,6 @@ const Dashboard = () => {
           <div className="dashboard-header">
             <h1 className="dashboard-title">Complaints Dashboard</h1>
           </div>
-
-
-        
-
         {/* Statistics Cards */}
         <div className="stats-grid">
           <div className="stat-card">
@@ -331,7 +353,6 @@ const Dashboard = () => {
 };
 
 
-
 const ComplaintRow = ({ complaint, onUpdateStatus, getStatusColor }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [status, setStatus] = useState(complaint.status);
@@ -339,11 +360,6 @@ const ComplaintRow = ({ complaint, onUpdateStatus, getStatusColor }) => {
   const [isUpdating, setIsUpdating] = useState(false);
 
   const [selectedImage, setSelectedImage] = useState(null);
-
-    
-
-
-
 
   const handleUpdate = async () => {
     setIsUpdating(true);
@@ -369,10 +385,6 @@ const ComplaintRow = ({ complaint, onUpdateStatus, getStatusColor }) => {
       <td>{complaint.roomNo}</td>
       <td>{complaint.emailId}</td>
       <td>{complaint.receivedOn}</td>
-      
-
-
-
       <td>
         {isEditing ? (
           <select 
@@ -393,7 +405,6 @@ const ComplaintRow = ({ complaint, onUpdateStatus, getStatusColor }) => {
           </span>
         )}
       </td>
-
       <td>
         {isEditing ? (
           <input
@@ -448,13 +459,9 @@ const ComplaintRow = ({ complaint, onUpdateStatus, getStatusColor }) => {
         </div>
       </div>
     )}
-
-
-
+    
     </tr>
 
-    
-    
   );
 };
 

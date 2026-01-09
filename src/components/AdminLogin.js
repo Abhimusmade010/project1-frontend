@@ -1,33 +1,26 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import { Link } from "react-router-dom";
 import Header from './Header';
 import API_BASE_URL from '../config/api';
 
-
 const AdminLogin = () => {
+
   const navigate = useNavigate();
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
-
   const [showPassword, setShowPassword] = useState(false);
-
-
-
-
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage({ type: '', text: '' });
-
     try {
       const formData = new FormData();
       formData.append('password', password);
 
-      const response = await fetch(`${API_BASE_URL}/admin/login`, {
+      const response = await fetch(`${API_BASE_URL}/admin/login` || '/admin/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -66,8 +59,9 @@ const AdminLogin = () => {
   };
 
   return (
-    
-    <div className>
+
+    <div className='admin-page'>
+      <Header isAdmin={true}/>
       {/* <Header /> */}
       <div className="form-container">
         <h1 className="form-title">Admin Login</h1>
@@ -134,6 +128,7 @@ const AdminLogin = () => {
       </div>
 
     </div>
+
   );
 };
 

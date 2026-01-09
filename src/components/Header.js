@@ -6,7 +6,7 @@ import pictLogo from "../assets/pict-logo.png"; // <-- add your logo file
 
 
 
-const Header = ({isAdmin,handleLogout}) => {
+const Header = ({isAdmin,handleLogout,AdminLogout}) => {
 
   return (
     <>
@@ -39,7 +39,7 @@ const Header = ({isAdmin,handleLogout}) => {
                   
                 )}      */}
               
-                {isAdmin && (
+                {isAdmin && AdminLogout && (
                 <li>
                   <button onClick={handleLogout} className="logout-btn">
                     <i className="fas fa-sign-out-alt"></i> Admin Logout
@@ -49,21 +49,12 @@ const Header = ({isAdmin,handleLogout}) => {
  
                 {!isAdmin && (
                   <li><Link to="/admin-login">Admin Login</Link></li>
-                  
                 )}
-                
-              
-              
-
               <li>
                 <a href="https://pict.edu" target="_blank" rel="noopener noreferrer">
                   PICT Website
                 </a>
               </li>
-
-
-
-              
             </ul>
           </nav>
         </div>
