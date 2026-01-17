@@ -36,7 +36,8 @@ const ComplaintForm = () => {
     'Basic Sciences and Engineering'
   ];
 
-  // ✅ FULL SCHEMA (Now includes dsrNo)
+  //FULL SCHEMA (Now includes dsrNo)
+
   const formSchema = z.object({
   emailAddress: z
     .string()
@@ -58,39 +59,6 @@ const ComplaintForm = () => {
       message: "DSR number must contain digits only",
     })
 });
-
-
-
-//image handleer
-//   const handleImageUpload = (e) => {
-//   const file = e.target.files[0];
-//   if (!file) return;
-
-//   // Validate file size (1MB = 1,024,000 bytes)
-//   if (file.size > 1024 * 1024) {
-//     setImageError("Image size must be less than 1MB.");
-//     setPreviewImage(null);
-//     setFormData({ ...formData, image: null });
-//     return;
-//   }
-
-//   setImageError("");
-
-//   // Show preview
-//   // const imageUrl = URL.createObjectURL(file);
-//   // setPreviewImage(imageUrl);
-
-//   // Save file to formData
-//   setFormData({ ...formData, image: file });
-// };
-
-// const removeImage = () => {
-//   setPreviewImage(null);
-//   setFormData({ ...formData, image: null });
-// };
-
-
-
 
 
   const handleChange = (e) => {
@@ -238,94 +206,6 @@ const ComplaintForm = () => {
   };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   setLoading(true);
-  //   setMessage({ type: '', text: '' });
-
-  //   // FULL FORM validation
-  //   const result = formSchema.safeParse(formData);
-
-  //   if (!result.success) {
-  //     setMessage({
-  //       type: "error",
-  //       text: result.error.errors[0].message
-  //     });
-  //     setLoading(false);
-  //     return;
-  //   }
-
-  //   try {
-  //     const response = await fetch('/user/submit', {
-  //       method: 'POST',
-  //       headers: { 'Content-Type': 'application/json' },
-  //       body: JSON.stringify({
-  //         emailId: formData.emailAddress,
-  //         department: formData.department,
-  //         roomNo: formData.roomNumber,
-  //         natureOfComplaint: formData.natureOfComplaint,
-  //         dsrNo: formData.dsrNo    // ✅ Send to backend
-  //       }),
-  //     });
-
-  //     const data = await response.json();
-
-  //     if (data.success) {
-  //       setMessage({
-  //         type: 'success',
-  //         text: `Complaint submitted successfully! Your complaint ID is: ${data.data.complaintId}`
-  //       });
-
-  //       // RESET form
-  //       setFormData({
-  //         emailAddress: '',
-  //         department: '',
-  //         roomNumber: '',
-  //         natureOfComplaint: '',
-  //         dsrNo: ''
-  //       });
-
-  //       setTimeout(() => navigate('/'), 3000);
-
-  //     } else {
-  //       setMessage({
-  //         type: 'error',
-  //         text: data.errors || 'Failed to submit complaint. Please try again.'
-  //       });
-  //     }
-
-  //   } catch (error) {
-  //     setMessage({
-  //       type: 'error',
-  //       text: 'Network error. Please check your connection and try again.'
-  //     });
-  //   }
-
-  //   setLoading(false);
-  // };
-
-
-
-
-
-
-
   return (
     <div className>
       <Header isAdmin={false}/>
@@ -459,16 +339,6 @@ const ComplaintForm = () => {
             </div>
 
 
-
-        
-
-
-
-
-
-
-
-
           <button type="submit" className="submit-button" disabled={loading}>
             {loading ? 'Submitting...' : 'Submit Complaint'}
           </button>
@@ -478,5 +348,6 @@ const ComplaintForm = () => {
     </div>
   );
 };
+
 
 export default ComplaintForm;

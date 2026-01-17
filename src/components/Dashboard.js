@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect ,useCallback} from 'react';
 import { useNavigate } from 'react-router-dom';
 import DepartmentSummary from './DepartmentSummary';
 import './Dashboard.css';
@@ -34,24 +34,60 @@ const Dashboard = () => {
   ];
 
   const statuses = ['Pending', 'In-progress', 'Resolved'];
-  useEffect(() => {
-    fetchComplaints();
-  }, []);
+  // useEffect(() => {
+  //   fetchComplaints();
+  // }, []);
 
-  const fetchComplaints = async () =>{
-    try{
+  // const fetchComplaints = async () =>{
+  //   try{
+  //     setLoading(true);
+  //     const response = await fetch(`${API_BASE_URL}/admin/api/complaints`, {
+  //       credentials: 'include'
+  //     });
+
+  //     if(response.status === 401) {
+  //       navigate('/admin-login');
+  //       return;
+  //     }
+
+  //     const data = await response.json();
+      
+  //     if (data.success) {
+  //       setComplaints(data.data);
+  //       calculateStats(data.data);
+  //     } else {
+  //       setError('Failed to fetch complaints');
+  //     }
+  //   } catch (error) {
+  //     setError('Network error. Please try again.');
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+  const calculateStats = useCallback((complaintsData) => {
+    setStats({
+      total: complaintsData.length,
+      pending: complaintsData.filter(c => c.status === 'Pending').length,
+      inProgress: complaintsData.filter(c => c.status === 'In-progress').length,
+      resolved: complaintsData.filter(c => c.status === 'Resolved').length
+    });
+  }, []);
+  
+  const fetchComplaints = useCallback(async () => {
+    try {
       setLoading(true);
+
       const response = await fetch(`${API_BASE_URL}/admin/api/complaints`, {
         credentials: 'include'
       });
 
-      if(response.status === 401) {
+      if (response.status === 401) {
         navigate('/admin-login');
         return;
       }
 
       const data = await response.json();
-      
+
       if (data.success) {
         setComplaints(data.data);
         calculateStats(data.data);
@@ -63,17 +99,27 @@ const Dashboard = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [navigate,calculateStats]);
+    
+  useEffect(() => {
+    fetchComplaints();
+  }, [fetchComplaints]);
 
-  const calculateStats = (complaintsData) => {
-    const stats = {
-      total: complaintsData.length,
-      pending: complaintsData.filter(c => c.status === 'Pending').length,
-      inProgress: complaintsData.filter(c => c.status === 'In-progress').length,
-      resolved: complaintsData.filter(c => c.status === 'Resolved').length
-    };
-    setStats(stats);
-  };
+
+
+
+  // const calculateStats = (complaintsData) => {
+  //   const stats = {
+  //     total: complaintsData.length,
+  //     pending: complaintsData.filter(c => c.status === 'Pending').length,
+  //     inProgress: complaintsData.filter(c => c.status === 'In-progress').length,
+  //     resolved: complaintsData.filter(c => c.status === 'Resolved').length
+  //   };
+  //   setStats(stats);
+  // };
+
+  
+
   const updateComplaintStatus = async (rowIndex, status, technician) => {
     try {
       const response = await fetch(`${API_BASE_URL}/admin/update-status`, {
@@ -147,44 +193,37 @@ const Dashboard = () => {
 
 
   const handleLogout = async () => {
+    console.log("🔥 HANDLE LOGOUT CALLED");
     try {
-      const response = await fetch(`${API_BASE_URL}/admin/logout`, {
+      const url = API_BASE_URL
+      ? `${API_BASE_URL}/admin/logout`
+      : "/admin/logout";
+      
+      console.log("🔥 LOGOUT URL:", url);
+
+      const response = await fetch(url, {
         method:"POST",
         credentials: 'include'
       });
+
+      console.log("🔥 FETCH RESPONSE RECEIVED");
+
       const data=await response.json();
+
+      console.log("🔥 RESPONSE DATA:", data);
       if (response.ok) {
         alert(data.message);
-        navigate('/');
+        // navigate('/');
+        window.location.href = "/";
       }
       else{
         alert("Logout Failed!")
       }
     } catch (error) {
       console.error('Logout error:', error);
-      navigate('/');
+      window.location.href = "/";
     }
   };
-  //   const handleLogout = async () => {
-  //   try {
-  //     const response = await fetch(`${API_BASE_URL}/admin/logout`, {
-  //       method: "POST",
-  //       credentials: "include"
-  //     });
-
-  //     const data = await response.json();
-
-  //     if (data.success) {
-  //       alert(data.message); // ✅ "Logout Successfully!"
-  //       navigate("/admin-login"); // or "/"
-  //     } else {
-  //       alert("Logout failed");
-  //     }
-  //   } catch (error) {
-  //     alert("Logout error");
-  //   }
-  // };
-
 
 
   const getStatusColor = (status) => {
