@@ -1,6 +1,6 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import Header from './components/Header';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// import Header from './components/Header';
 import HomePage from './components/HomePage';
 import ComplaintForm from './components/ComplaintForm';
 import AdminLogin from './components/AdminLogin';
@@ -9,7 +9,7 @@ import './App.css';
 
 
 function AppContent() {
-  const location = useLocation();
+  // const location = useLocation();
   // const isDashboard = location.pathname === '/admin/dashboard';
 
   return (
