@@ -106,8 +106,6 @@ const Dashboard = () => {
   }, [fetchComplaints]);
 
 
-
-
   // const calculateStats = (complaintsData) => {
   //   const stats = {
   //     total: complaintsData.length,

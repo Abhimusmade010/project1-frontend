@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import Header from './Header';
 import API_BASE_URL from '../config/api';
@@ -11,6 +12,29 @@ const AdminLogin = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
   const [showPassword, setShowPassword] = useState(false);
+
+
+  useEffect(() => {
+  const checkAuth = async () => {
+    try {
+      const res = await fetch(`${API_BASE_URL}/admin/check-auth`, {
+        credentials: "include"
+      });
+
+      const data = await res.json();
+
+      if (data.isAdmin) {
+        navigate('/admin/dashboard');
+      }
+    } catch (err) {
+      console.log("Auth check failed");
+    }
+  };
+
+  checkAuth();
+}, []);
+
+
   
   const handleSubmit = async (e) => {
     e.preventDefault();
