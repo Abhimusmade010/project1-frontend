@@ -32,7 +32,7 @@ const AdminLogin = () => {
   };
 
   checkAuth();
-}, []);
+}, [navigate]);
 
 
   
