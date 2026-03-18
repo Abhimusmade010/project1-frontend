@@ -272,22 +272,11 @@ const Dashboard = () => {
           </button>
           <h1>Complaints Dashboard</h1> */}
 
-          {/* <div className="dashboard-header">
+          <div className="dashboard-header">
             <h1 className="dashboard-title">Complaints Dashboard</h1>
             
-          </div> */}
-          <div className="dashboard-header flex items-center justify-center gap-4">
-            <h1 className="dashboard-title text-blue-600 text-3xl font-bold">
-              Complaints Dashboard
-            </h1>
-
-            <button
-              onClick={() => window.open("https://docs.google.com/spreadsheets/d/1Ma-YVQXEiO8TyJiBh6sCQUSSMkSEN-o_K4wBn-wbK7E/edit?gid=0#gid=0", "_blank")}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700 transition duration-200"
-            >
-              Open Sheet
-            </button>
           </div>
+          
 
 
         {/* Statistics Cards */}
@@ -350,6 +339,18 @@ const Dashboard = () => {
               {showDepartmentSummary ? 'Hide' : 'Show'} Department Summary
             </button>
           </div>
+
+          <div className='filter-group'>
+              <button
+              onClick={() => window.open("https://docs.google.com/spreadsheets/d/1Ma-YVQXEiO8TyJiBh6sCQUSSMkSEN-o_K4wBn-wbK7E/edit?gid=0#gid=0", "_blank")}
+              className="toggle-summary-btn"
+            >
+              📄Open Sheet
+            </button>
+
+          </div>
+            
+
         </div>
 
 
