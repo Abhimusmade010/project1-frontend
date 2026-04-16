@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import DepartmentSummary from './DepartmentSummary';
 import './Dashboard.css';
 import Header from "../components/Header";
-import API_BASE_URL from '../config/api';
+import API_BASE_URL, { parseResponseJson } from '../config/api';
 
 const Dashboard = () => {
   console.log("🔥 DASHBOARD FROM MAIN BRANCH 🔥");
@@ -86,9 +86,9 @@ const Dashboard = () => {
         return;
       }
 
-      const data = await response.json();
+      const data = await parseResponseJson(response);
 
-      if (data.success) {
+      if (data?.success) {
         setComplaints(data.data);
         calculateStats(data.data);
       } else {
@@ -133,9 +133,9 @@ const Dashboard = () => {
         }),
       });
 
-      const data = await response.json();
+      const data = await parseResponseJson(response);
 
-             if (data.success) {
+             if (data?.success) {
          // Update the local state
          setComplaints(prevComplaints => 
            prevComplaints.map(complaint => 
@@ -162,7 +162,7 @@ const Dashboard = () => {
        } else {
          setNotification({
            show: true,
-           message: 'Error updating status: ' + data.errors,
+           message: 'Error updating status: ' + (data?.errors || 'Unknown error'),
            type: 'error'
          });
          setTimeout(() => setNotification({ show: false, message: '', type: 'success' }), 5000);
@@ -193,10 +193,8 @@ const Dashboard = () => {
   const handleLogout = async () => {
     console.log("🔥 HANDLE LOGOUT CALLED");
     try {
-      const url = API_BASE_URL
-      ? `${API_BASE_URL}/admin/logout`
-      : "/admin/logout";
-      
+      const url = `${API_BASE_URL}/admin/logout`;
+
       console.log("🔥 LOGOUT URL:", url);
 
       const response = await fetch(url, {
@@ -206,10 +204,10 @@ const Dashboard = () => {
 
       console.log("🔥 FETCH RESPONSE RECEIVED");
 
-      const data=await response.json();
+      const data = await parseResponseJson(response);
 
       console.log("🔥 RESPONSE DATA:", data);
-      if (response.ok) {
+      if (response.ok && data) {
         alert(data.message);
         // navigate('/');
         window.location.href = "/";

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 // import React, { useState,  } from 'react';
 import { Link } from "react-router-dom";
 import Header from './Header';
-import API_BASE_URL from '../config/api';
+import API_BASE_URL, { parseResponseJson } from '../config/api';
 
 const AdminLogin = () => {
 
@@ -21,9 +21,8 @@ const AdminLogin = () => {
         credentials: "include"
       });
 
-      const data = await res.json();
-
-      if (data.isAdmin) {
+      const data = await parseResponseJson(res);
+      if (data?.isAdmin) {
         navigate('/admin/dashboard');
       }
     } catch (err) {
@@ -44,7 +43,7 @@ const AdminLogin = () => {
       const formData = new FormData();
       formData.append('password', password);
 
-      const response = await fetch(`${API_BASE_URL}/admin/login` || '/admin/login', {
+      const response = await fetch(`${API_BASE_URL}/admin/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -56,8 +55,8 @@ const AdminLogin = () => {
       if (response.redirected) {
         window.location.href = response.url;
       } else {
-        const data = await response.json();
-        if (data.success) {
+        const data = await parseResponseJson(response);
+        if (data?.success) {
           setMessage({
             type: 'success',
             text: 'Login successful! Redirecting to dashboard...'
@@ -68,7 +67,7 @@ const AdminLogin = () => {
         } else {
           setMessage({
             type: 'error',
-            text: data.message || 'Login failed. Please check your password.'
+            text: data?.message || 'Login failed. Please check your password.'
           });
         }
       }

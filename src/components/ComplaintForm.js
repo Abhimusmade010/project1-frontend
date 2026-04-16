@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
-import API_BASE_URL from '../config/api';
+import API_BASE_URL, { parseResponseJson } from '../config/api';
 
 
 
@@ -165,13 +165,24 @@ const ComplaintForm = () => {
             body: body,          // ❗ MUST USE multipart/form-data
             // ❗ DO NOT SET HEADERS → Browser will set boundary
           });
-          
-          const data = await response.json();
+
+          const data = await parseResponseJson(response);
+          if (data == null) {
+            setMessage({
+              type: 'error',
+              text: 'Server error or invalid response. If this persists, clear site data for localhost or check that the backend is running on the proxy port.'
+            });
+            return;
+          }
 
           if (data.success) {
+            const id = data.data?.complaintId;
+            const emailOk = data.data?.emailSent !== false;
             setMessage({
               type: 'success',
-              text: `Complaint submitted successfully! Your complaint ID is: ${data.data.complaintId}`
+              text: emailOk
+                ? `Complaint submitted successfully! Your complaint ID is: ${id}`
+                : `Complaint saved (ID: ${id}), but the admin notification email did not send. Set BREVO_API_KEY and BREVO_SENDER_EMAIL on the backend (Brevo dashboard → API keys & verified sender).`
             });
 
             // RESET form
@@ -207,7 +218,7 @@ const ComplaintForm = () => {
 
 
   return (
-    <div className>
+    <div className="complaint-page">
       <Header isAdmin={false}/>
 
       <div className="form-container">
