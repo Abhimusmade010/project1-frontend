@@ -78,7 +78,9 @@ const Dashboard = () => {
       setLoading(true);
 
       const response = await fetch(`${API_BASE_URL}/admin/api/complaints`, {
-        credentials: 'include'
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+        }
       });
 
       if (response.status === 401) {
@@ -124,8 +126,8 @@ const Dashboard = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
         },
-        credentials: 'include',
         body: JSON.stringify({
           rowIndex: rowIndex,
           status: status,
@@ -199,7 +201,9 @@ const Dashboard = () => {
 
       const response = await fetch(url, {
         method:"POST",
-        credentials: 'include'
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+        }
       });
 
       console.log("🔥 FETCH RESPONSE RECEIVED");
@@ -209,7 +213,7 @@ const Dashboard = () => {
       console.log("🔥 RESPONSE DATA:", data);
       if (response.ok && data) {
         alert(data.message);
-        // navigate('/');
+        localStorage.removeItem('adminToken'); // Clear token on logout
         window.location.href = "/";
       }
       else{

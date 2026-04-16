@@ -18,7 +18,9 @@ const AdminLogin = () => {
   const checkAuth = async () => {
     try {
       const res = await fetch(`${API_BASE_URL}/admin/check-auth`, {
-        credentials: "include"
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+        }
       });
 
       const data = await parseResponseJson(res);
@@ -48,8 +50,7 @@ const AdminLogin = () => {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: new URLSearchParams(formData),
-        credentials: 'include'
+        body: new URLSearchParams(formData)
       });
 
       if (response.redirected) {
@@ -57,6 +58,9 @@ const AdminLogin = () => {
       } else {
         const data = await parseResponseJson(response);
         if (data?.success) {
+          // Save JWT token to local storage
+          localStorage.setItem('adminToken', data.token);
+          
           setMessage({
             type: 'success',
             text: 'Login successful! Redirecting to dashboard...'
