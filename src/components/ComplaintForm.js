@@ -15,8 +15,8 @@ const ComplaintForm = () => {
     department: '',
     roomNumber: '',
     natureOfComplaint: '',
-    dsrNo: '' ,    // ✅ Added DSR number
-    image:null
+    dsrNo: '',    // ✅ Added DSR number
+    image: null
   });
 
   const [previewImage, setPreviewImage] = useState(null);
@@ -39,26 +39,26 @@ const ComplaintForm = () => {
   //FULL SCHEMA (Now includes dsrNo)
 
   const formSchema = z.object({
-  emailAddress: z
-    .string()
-    .email("Invalid email format")
-    .regex(/@pict\.edu$/, "Only pict.edu emails are allowed"),
+    emailAddress: z
+      .string()
+      .email("Invalid email format")
+      .regex(/@pict\.edu$/, "Only pict.edu emails are allowed"),
 
-  department: z.string().min(1, "Department is required"),
+    department: z.string().min(1, "Department is required"),
 
-  roomNumber: z.string().min(1, "Room number is required"),
+    roomNumber: z.string().min(1, "Room number is required"),
 
-  natureOfComplaint: z
-    .string()
-    .min(10, "Complaint must be at least 10 characters long"),
+    natureOfComplaint: z
+      .string()
+      .min(10, "Complaint must be at least 10 characters long"),
 
-  dsrNo: z
-    .string()
-    .min(1, "DSR number is required")
-    .refine((val) => /^[0-9]+$/.test(val), {
-      message: "DSR number must contain digits only",
-    })
-});
+    dsrNo: z
+      .string()
+      .min(1, "DSR number is required")
+      .refine((val) => /^[0-9]+$/.test(val), {
+        message: "DSR number must contain digits only",
+      })
+  });
 
 
   const handleChange = (e) => {
@@ -77,8 +77,8 @@ const ComplaintForm = () => {
       if (!validation.success) {
         const issue = validation.error.issues?.[0];
         setErrors(prev => ({
-        ...prev,
-        emailAddress: issue?.message || "Invalid email"
+          ...prev,
+          emailAddress: issue?.message || "Invalid email"
         }));
       } else {
         setErrors(prev => ({ ...prev, emailAddress: "" }));
@@ -106,7 +106,7 @@ const ComplaintForm = () => {
       setFormData({ ...formData, image: null });
       return;
     }
-    if(!file.type.startsWith('image/')){
+    if (!file.type.startsWith('image/')) {
       setImageError("Only image files are allowed!");
       return;
     }
@@ -129,97 +129,98 @@ const ComplaintForm = () => {
 
 
   const handleSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        setMessage({ type: '', text: '' });
+    e.preventDefault();
+    setLoading(true);
+    setMessage({ type: '', text: '' });
 
-        // FULL FORM validation (Zod)
-        const result = formSchema.safeParse(formData);
+    // FULL FORM validation (Zod)
+    const result = formSchema.safeParse(formData);
 
-        if (!result.success) {
-          setMessage({
-            type: "error",
-            text: result.error.errors[0].message
-          });
-          setLoading(false);
-          return;
-        }
+    if (!result.success) {
+      setMessage({
+        type: "error",
+        text: result.error.issues[0].message //CHANGE
+      });
+      setLoading(false);
+      return;
+    }
 
-        try {
-          const body = new FormData();
+    try {
+      const body = new FormData();
 
-          // Append text inputs
-          body.append('emailId', formData.emailAddress);
-          body.append('department', formData.department);
-          body.append('roomNo', formData.roomNumber);
-          body.append('natureOfComplaint', formData.natureOfComplaint);
-          body.append('dsrNo', formData.dsrNo);
+      // Append text inputs
+      body.append('emailId', formData.emailAddress);
+      body.append('department', formData.department);
+      body.append('roomNo', formData.roomNumber);
+      body.append('natureOfComplaint', formData.natureOfComplaint);
+      body.append('dsrNo', formData.dsrNo);
 
-          // Append image file
-          if (formData.image) {
-            body.append('image', formData.image);
-          }
+      // Append image file
+      if (formData.image) {
+        body.append('image', formData.image);
+      }
 
-          const response = await fetch(`${API_BASE_URL}/user/submit`, {
-            method: 'POST',
-            body: body,          // ❗ MUST USE multipart/form-data
-            // ❗ DO NOT SET HEADERS → Browser will set boundary
-          });
+      const response = await fetch(`${API_BASE_URL}/user/submit`, {
+        method: 'POST',
+        body: body,          // ❗ MUST USE multipart/form-data
+        // ❗ DO NOT SET HEADERS → Browser will set boundary
+      });
 
-          const data = await parseResponseJson(response);
-          if (data == null) {
-            setMessage({
-              type: 'error',
-              text: 'Server error or invalid response. If this persists, clear site data for localhost or check that the backend is running on the proxy port.'
-            });
-            return;
-          }
+      const data = await parseResponseJson(response);
+      if (data == null) {
+        setMessage({
+          type: 'error',
+          text: 'Server error or invalid response. If this persists, clear site data for localhost or check that the backend is running on the proxy port.'
+        });
+        setLoading(false);  //CHANGE
+        return;
+      }
 
-          if (data.success) {
-            const id = data.data?.complaintId;
-            const emailOk = data.data?.emailSent !== false;
-            setMessage({
-              type: 'success',
-              text: emailOk
-                ? `Complaint submitted successfully! Your complaint ID is: ${id}`
-                : `Complaint saved (ID: ${id}), but the admin notification email did not send. Set BREVO_API_KEY and BREVO_SENDER_EMAIL on the backend (Brevo dashboard → API keys & verified sender).`
-            });
+      if (data.success) {
+        const id = data.data?.complaintId;
+        const emailOk = data.data?.emailSent !== false;
+        setMessage({
+          type: 'success',
+          text: emailOk
+            ? `Complaint submitted successfully! Your complaint ID is: ${id}`
+            : `Complaint saved (ID: ${id}), but the admin notification email did not send. Set BREVO_API_KEY and BREVO_SENDER_EMAIL on the backend (Brevo dashboard → API keys & verified sender).`
+        });
 
-            // RESET form
-            setFormData({
-              emailAddress: '',
-              department: '',
-              roomNumber: '',
-              natureOfComplaint: '',
-              dsrNo: '',
-              image: null   // reset image also
-            });
-            setPreviewImage(null);
+        // RESET form
+        setFormData({
+          emailAddress: '',
+          department: '',
+          roomNumber: '',
+          natureOfComplaint: '',
+          dsrNo: '',
+          image: null   // reset image also
+        });
+        setPreviewImage(null);
 
-            setTimeout(() => navigate('/'), 3000);
+        setTimeout(() => navigate('/'), 3000);
 
-          } else {
-            setMessage({
-              type: 'error',
-              text: data.errors || 'Failed to submit complaint. Please try again.'
-            });
-          }
+      } else {
+        setMessage({
+          type: 'error',
+          text: data.errors || 'Failed to submit complaint. Please try again.'
+        });
+      }
 
-        } catch (error) {
-          console.error(error);
-          setMessage({
-            type: 'error',
-            text: 'Network error. Please check your connection and try again.'
-          });
-        }
+    } catch (error) {
+      console.error(error);
+      setMessage({
+        type: 'error',
+        text: 'Network error. Please check your connection and try again.'
+      });
+    }
 
-        setLoading(false);
+    setLoading(false);
   };
 
 
   return (
     <div className="complaint-page">
-      <Header isAdmin={false}/>
+      <Header isAdmin={false} />
 
       <div className="form-container">
         <h1 className="form-title">Submit Hardware Complaint</h1>
@@ -310,44 +311,44 @@ const ComplaintForm = () => {
           </div>
 
 
-            {/* IMAGE UPLOAD */}
-            {/* IMAGE UPLOAD */}
-            <div className="form-group">
-              <label className="form-label">
-                Upload Image (Max 1MB) *
-              </label>
+          {/* IMAGE UPLOAD */}
+          {/* IMAGE UPLOAD */}
+          <div className="form-group">
+            <label className="form-label">
+              Upload Image (Max 1MB) *
+            </label>
 
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-                className="form-input"
-              />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              className="form-input"
+            />
 
-              {/* Size error or validation errors */}
-              {imageError && (
-                <p className="error-text">{imageError}</p>
-              )}
+            {/* Size error or validation errors */}
+            {imageError && (
+              <p className="error-text">{imageError}</p>
+            )}
 
-              {/* Preview + Remove Button */}
-              {previewImage && (
-                <div className="image-preview-container">
-                  <img
-                    src={previewImage}
-                    alt="Preview"
-                    className="image-preview"
-                  />
+            {/* Preview + Remove Button */}
+            {previewImage && (
+              <div className="image-preview-container">
+                <img
+                  src={previewImage}
+                  alt="Preview"
+                  className="image-preview"
+                />
 
-                  <button
-                    type="button"
-                    className="remove-image-button"
-                    onClick={removeImage}
-                  >
-                    Remove Image
-                  </button>
-                </div>
-              )}
-            </div>
+                <button
+                  type="button"
+                  className="remove-image-button"
+                  onClick={removeImage}
+                >
+                  Remove Image
+                </button>
+              </div>
+            )}
+          </div>
 
 
           <button type="submit" className="submit-button" disabled={loading}>
